@@ -14,7 +14,8 @@ end
 
 execute 'register-ps-repo-rhel' do
 	command 'curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo'
-	action :nothing
+	action :run
+	not_if { File.exists?("/etc/yum.repos.d/microsoft.repo") }
 end
 
 execute 'register-ps-repo-deb' do
