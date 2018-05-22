@@ -6,9 +6,9 @@
 #
 
 if node['platform_family'] == 'rhel'
-	notifies :run, 'execute[register-powershell-repo-rhel]'
+	notifies :run, 'execute[register-ps-repo-rhel]'
 elsif node['platform_family'] == 'debian'
-	notifies :run, 'execute[register-powershell-repo-deb]'
+	notifies :run, 'execute[register-ps-repo-deb]'
 	notifies :run, 'execute[register-ms-product-feed]'
 end
 
