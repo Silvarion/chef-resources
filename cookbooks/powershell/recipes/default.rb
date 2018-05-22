@@ -5,9 +5,9 @@
 # Copyright:: 2018, Jesus Sanchez, All Rights Reserved.
 #
 
-if node['platform_family'] == "rhel"
+if node['platform_family'] == 'rhel'
 	notifies :run, 'execute[register-powershell-repo-rhel]'
-elsif node['platform_family'] == "debian"
+elsif node['platform_family'] == 'debian'
 	notifies :run, 'execute[register-powershell-repo-deb]'
 	notifies :run, 'execute[register-ms-product-feed]'
 end
@@ -15,7 +15,7 @@ end
 execute 'register-ps-repo-rhel' do
 	command 'curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo'
 	action :run
-	not_if { File.exists?("/etc/yum.repos.d/microsoft.repo") }
+	not_if { File.exist?("/etc/yum.repos.d/microsoft.repo") }
 end
 
 execute 'register-ps-repo-deb' do
