@@ -11,7 +11,13 @@ if node['platform_family'] == 'rhel'
     Chef::Log.info('CentOS/Oracle platform detected')
     remote_file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm" do
       source 'https://packages.microsoft.com/config/rhel/7/packages-microsoft-prod.rpm'
-      notifies 'execute[reg-ms-repo-centos]',	:run,	:immediate
+    end
+    execute 'reg-ms-repo-centos' do
+      command "sudo rpm -Uvh #{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm ; yum update"
+      action :run, :immediate
+    end
+    file "#{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm" do
+      action :delete
     end
   # Fedora
   when 'fedora'
@@ -27,6 +33,13 @@ if node['platform_family'] == 'rhel'
       source 'https://packages.microsoft.com/config/opensuse/42.2/prod.repo'
       notifies 'execute[reg-ms-repo-suse', :run, :immediate
     end
+    execute 'reg-ms-repo-suse' do
+      command "sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc ; sudo mv #{Chef::Config[:file_cache_path]}/prod.repo /etc/zypp/repos.d/microsoft-prod.repo"
+      action :nothing
+    end
+    file "#{Chef::Config[:file_cache_path]}/prod.repo" do
+      action :delete
+    end
   end
   %(libunwind libicu).each do |rpm_pkg|
     package rpm_pkg do
@@ -41,16 +54,6 @@ elsif node['platform_family'] == 'debian'
 else
   Chef::Log.info('Other Linux type platform detected')
   # Do other's stuff
-end
-
-execute 'reg-ms-repo-centos' do
-  command "sudo rpm -Uvh #{Chef::Config[:file_cache_path]}/packages-microsoft-prod.rpm ; yum update"
-  action :nothing
-end
-
-execute 'reg-ms-repo-suse' do
-  command "sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc ; sudo mv #{Chef::Config[:file_cache_path]}/prod.repo /etc/zypp/repos.d/microsoft-prod.repo"
-  action :nothing
 end
 
 package 'dot-net-sdk' do
