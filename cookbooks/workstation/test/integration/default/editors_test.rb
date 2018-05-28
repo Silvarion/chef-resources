@@ -7,12 +7,21 @@
 
 unless os.windows?
   # This is an example test, replace with your own test.
-  describe user('root'), :skip do
-    it { should exist }
+  describe package('vim'), :skip do
+    it { should be_installed }
+  end
+  describe package('xed'), :skip do
+    it { should be_installed }
+  end
+  describe package('nano'), :skip do
+    it { should be_installed }
+  end
+  describe package('gvim'), :skip do
+    it { should be_installed }
   end
 end
 
-# This is an example test, replace it with your own test.
+# No ports listening
 describe port(80), :skip do
   it { should_not be_listening }
 end

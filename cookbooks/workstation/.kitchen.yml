@@ -1,6 +1,6 @@
 ---
 driver:
-  name: vagrant
+  name: docker
 
 provisioner:
   name: chef_zero
@@ -13,8 +13,13 @@ verifier:
   name: inspec
 
 platforms:
-  - name: ubuntu-16.04
+#  - name: debian-8
+#  - name: debian-9
+  - name: ubuntu-18.04
   - name: centos-7
+#  - name: fedora-26
+  - name: fedora-27
+#  - name: fedora-28
 
 suites:
   - name: default

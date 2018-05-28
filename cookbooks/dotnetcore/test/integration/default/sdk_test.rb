@@ -12,7 +12,18 @@ unless os.windows?
   end
 end
 
-# This is an example test, replace it with your own test.
-describe port(80), :skip do
-  it { should_not be_listening }
+# Files
+if node['platform'] == 'fedora'
+describe file('') do
+  
+end
+
+
+# Packages
+describe package('libunwind') do
+  it { should be_installed }
+end
+
+describe package('libicu') do
+  it { should be_installed }
 end
